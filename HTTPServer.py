@@ -19,9 +19,12 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.end_headers()
     def do_GET(self):
         #Respond to a GET request.
+        if self.path == "/":
+            self.path = "/game.html"
         try:
+
             if self.path.endswith((".html",".htm")):
-                f = open(curdir + sep + self.path) #self.path has /index.html
+                f = open(curdir + sep + self.path, 'rb') #self.path has /index.html
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
@@ -29,9 +32,6 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 self.wfile.write(f.read())
                 f.close()
                 return
-
-            if self.path == "/":
-                self.path = "/game.html"
 
             if self.path.endswith(".time"):
                 self.send_response(200)
