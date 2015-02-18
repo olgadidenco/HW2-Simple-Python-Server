@@ -8,11 +8,11 @@ from os import curdir, sep
 
 #Define some variables to be used in the execution of the program
 HOST_NAME = '' # can be 'localhost' or if you change your hosts.txt file, what happens?? ;)
-PORT_NUMBER = 9001 #If you kill the server un-gracefully you may need to change this to an open socket.
+PORT_NUMBER = 9000 #If you kill the server un-gracefully you may need to change this to an open socket.
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 #MyHandler class implements standard standard HTTP menthods
-#currently HEAD and GET requests are handled.      
+#currently HEAD and GET requests are handled.
     def do_HEAD(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
@@ -29,25 +29,38 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 self.wfile.write(f.read())
                 f.close()
                 return
-                
+
+            if self.path == "/":
+                self.path = "/game.html"
+
             if self.path.endswith(".time"):
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
                 # Send current time
-                self.wfile.write("Are the chilren all in bed because now its " + str(time.localtime()[3]) + " O'Clock!!") 
+                self.wfile.write("Are the chilren all in bed because now its " + str(time.localtime()[3]) + " O'Clock!!")
                 return
-                
+
             if self.path.endswith(".gif"):
-                # IMPLEMENT THIS
+                f = open(curdir + sep + self.path, 'rb')
+                self.send_response(200)
+                self.send_header("Content-type", "image/gif")
+                self.end_headers()
+                self.wfile.write(f.read())
+                f.close()
                 return
-                
+
             if self.path.endswith(".jpg"):
-                # IMPLEMENT THIS
+                f = open(curdir + sep + self.path, 'rb')
+                self.send_response(200)
+                self.send_header("Content-type", "image/jpg")
+                self.end_headers()
+                self.wfile.write(f.read())
+                f.close()
                 return
         except IOError:
             self.send_error(404,'File not found: %self' % self.path)
-            
+
 if __name__ == '__main__':
     server_class = BaseHTTPServer.HTTPServer  #Instantiate a server object
     httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler) #Tell the serever what hostname & port to run on, then what handler to handle the server requests.
