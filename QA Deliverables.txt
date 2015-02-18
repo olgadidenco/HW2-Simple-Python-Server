@@ -1,0 +1,22 @@
+1. Run the server as it is and notice what is written to the command window as you click on the links. What is going on here? (Short paragraph or two.)
+
+On the local server, port sits and listens to the requests. A web browser(client) sends a request to the server that includes client IP, date and time, request type and status:
+127.0.0.1 - - [17/Feb/2015 22:20:41] "GET /index.html HTTP/1.1" 200 -
+
+Server processes the request according to what we have specified in HTTPServer.py server file and returns the requested resources to the client.
+When we get our page back and click on any of the links, the whole process mentioned above happens again.
+
+If something is not available or not existing (ex. klunk.html) we get the 404 error code saying that file was not found
+127.0.0.1 - - [17/Feb/2015 22:20:51] code 404, message File not found: /klunk.htmlelf
+Then we receive a message in the command window (with IP, time, request type and status), but this time status is 404 which is a Not Found file error.
+127.0.0.1 - - [17/Feb/2015 22:20:51] "GET /klunk.html HTTP/1.1" 404 -
+
+2. With images working on your pages, note what is happening in the command window as you click from page to page.
+
+When we click from page to page we receive GET messages like the once mentioned above for every page requested. 
+Each image has it's own GET request which gets processed.
+
+127.0.0.1 - - [17/Feb/2015 22:41:57] "GET /game.html HTTP/1.1" 200 -
+127.0.0.1 - - [17/Feb/2015 22:42:00] "GET /illusions.html HTTP/1.1" 200 -
+127.0.0.1 - - [17/Feb/2015 22:42:00] "GET /img/coffee.gif HTTP/1.1" 200 -
+
